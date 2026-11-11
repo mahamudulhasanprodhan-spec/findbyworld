@@ -1,5 +1,19 @@
 # Changelog
 
+## M4: Country-aware and direct search links (2026-11-10)
+
+- Searches on international platforms now include the country, so Canada → Thomasnet
+  and United States → Thomasnet are different searches, and France → Europages
+  includes "France".
+- The small "Kompass" link is hidden in the six countries whose main result is already
+  their own Kompass site.
+- Added direct search links, tested in a browser with two products each, for Alibaba,
+  TradeIndia, Made-in-China, Global Sources and EC21. Each keeps a "via Google" link.
+- Added the `{q-}` placeholder for sites that write the search with hyphens in the path.
+- IndiaMART, Thomasnet and Europages keep their Google links.
+- `docs/DATA.md` explains scope, direct search links, Kompass and why the MOQ is not
+  sent to the directories.
+
 ## M3: Move the data into JSON (2026-11-10)
 
 - Moved the 196 countries into `data/countries.json` (with a region for each) and the

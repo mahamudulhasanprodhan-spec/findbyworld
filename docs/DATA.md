@@ -60,7 +60,7 @@ several countries lists all of them in `countries`.
 | `scope` | text | yes | `national` or `international` (see below). |
 | `countries` | list of text | yes | ISO codes from `countries.json`. At least one. |
 | `focusByCountry` | object | no | A different description for one country: `{ "US": "…" }`. Countries not listed here use `focus`. |
-| `searchUrl` | text or `null` | no | The platform's own search address. Keep it `null`; it is filled in during milestone M4, and only with addresses that were tested in a browser. |
+| `searchUrl` | text or `null` | no | A template for the platform's own search page (see "Direct search links" below). `null` means the platform uses a Google search of its site. |
 
 `scope` values:
 
@@ -69,8 +69,57 @@ several countries lists all of them in `countries`.
 - `international`: the platform lists suppliers from many countries, for example
   Alibaba, Thomasnet, Europages or TradeKey.
 
-The page does not use `scope` yet. Milestone M4 uses it to add the country name to
-searches on international platforms.
+For an `international` platform, the Google search also includes the name of the
+country the link is shown under, for example `site:thomasnet.com bicycle Canada`.
+A `national` platform is searched for the product only.
+
+## Direct search links
+
+Every platform has a Google link: a Google search limited to the platform's `domain`.
+A platform with a `searchUrl` also gets a direct link to its own search page. The direct
+link becomes the main link, and the Google link is shown beside it as "via Google".
+
+`searchUrl` is the address of the platform's search results, with a placeholder where
+the product goes:
+
+| Placeholder | Replaced by | Example for "leather bags" |
+|---|---|---|
+| `{q}` | the product, URL-encoded | `leather%20bags` |
+| `{q-}` | the product in lowercase, with hyphens between words | `leather-bags` |
+| `{country}` | the country name, URL-encoded | `France` |
+
+```json
+"searchUrl": "https://www.tradeindia.com/search.html?keyword={q}"
+```
+
+Rules:
+
+- It must start with `https://` and contain `{q}` or `{q-}`.
+- Never guess a search address. Search for a product on the platform, copy the address
+  from the address bar, remove tracking parameters, and put the placeholder where the
+  product was. Then open the result with two different products and check both return
+  results before saving it.
+- Do not add a `searchUrl` when the address contains something specific to one product,
+  such as a category number. Leave it `null`.
+- With `{q-}`, a product with no letters a–z or digits (for example one typed in
+  another alphabet) has no direct link, and the Google link is used.
+
+Platforms with a direct link today: Alibaba, TradeIndia, Made-in-China, Global Sources
+and EC21.
+
+## Kompass
+
+Countries without their own platforms get a small "Kompass" link that searches
+`kompass.com` for the product and the country name. A country whose platform list
+already has its own Kompass site (a `domain` ending in `kompass.com`, such as
+`gb.kompass.com`) does not get the small link, because it would repeat the main result.
+
+## MOQ
+
+The MOQ the user types appears in the message to send suppliers, in the "Ask for MOQ"
+note under each platform, and in the "Web search" link. It is not sent to the
+directories: most of them have no MOQ filter that can be set through the address, so
+FindByWorld does not invent one.
 
 Within one country, platforms appear in the same order as in the file.
 
@@ -85,7 +134,7 @@ search links.
 ## How to add a platform
 
 1. Add a record to `data/platforms.json` with `name`, `domain`, `focus`, `scope`,
-   `countries` and `"searchUrl": null`.
+   `countries` and `"searchUrl": null` (or a tested template, see "Direct search links").
 2. In `countries`, use ISO codes that exist in `countries.json`.
 
 The countries listed then appear under "Countries with dedicated directories".
