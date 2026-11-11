@@ -1,28 +1,48 @@
 # FindByWorld
 
-FindByWorld is a university class project: a directory of diverse textile and leather
-suppliers in Kenya, Egypt, India, Vietnam and Portugal, for startups that need
-small-batch manufacturing. It has three views:
+A simple, Google-style supplier search for startups and small brands.
 
-- **Directory**: search and filter suppliers by region, country, category, minimum
-  order, supplier profile and verification.
-- **RFQ board**: post a request for quote and see how many suppliers match it.
-- **Plans**: how the business would make money, plus the roadmap.
+Type a product (for example **bicycle**), add an optional **MOQ** (minimum order
+quantity, for example **100**), and press **Search**. FindByWorld shows results
+country by country:
 
-All companies, phone numbers and emails are fictional sample data.
+- **30 countries with their own B2B directories**, such as China (Alibaba,
+  Global Sources, Made-in-China), India (IndiaMART, TradeIndia), Germany
+  (IndustryStock, WLW) and the United States (Thomasnet, MFG.com). Each platform gets
+  a search link for your product.
+- **166 more countries** through global directories (Kompass) and web search.
+- A **ready-to-copy message** to send suppliers, including your order quantity.
+
+FindByWorld is a meta-search page: it does not store supplier listings. It sends your
+search to the right directory in each country. The country and platform list comes
+from the reviewed research file *Comprehensive Global B2B Directories – All Countries*.
+
+> FindByWorld does not verify suppliers. Always check business licences, ask for
+> samples and use secure payment terms before ordering.
 
 ## Run it locally
 
-The site is plain HTML, CSS and JavaScript. There is no build step and nothing to install.
+1. Install [VS Code](https://code.visualstudio.com/) and the **Live Server** extension.
+2. Open this folder in VS Code.
+3. Right-click `index.html` → **Open with Live Server**.
 
-1. Open this folder in VS Code.
-2. Install the **Live Server** extension (by Ritwick Dey) if you don't have it.
-3. Right-click `index.html` and choose **Open with Live Server**.
+No installs, no build step, no API keys.
 
-The site opens in your browser at `http://127.0.0.1:5500/`.
+## Project structure
 
-## Project docs
+```
+index.html                     the page (split into css/ and js/ in milestone M2)
+CLAUDE.md                      rules for the AI coding assistant
+docs/PLAN.md                   milestones M1–M8
+docs/CHANGELOG.md              what changed in each milestone
+.github/pull_request_template.md
+```
 
-- [docs/PLAN.md](docs/PLAN.md): the build plan, one milestone at a time
-- [docs/CHANGELOG.md](docs/CHANGELOG.md): what changed in each milestone
-- [CLAUDE.md](CLAUDE.md): project rules for the AI coding assistant
+## Built with
+
+Plain HTML, CSS and JavaScript, hosted free on GitHub Pages.
+Built step by step with an AI coding assistant as a university class project.
+
+## Live site
+
+Coming in milestone M8.
