@@ -13,7 +13,7 @@
   { "name": "IndustryStock", "domain": "industrystock.com", "focus": "Machinery, engineering, components", "scope": "international", "countries": ["DE"], "searchUrl": null },
   { "name": "WLW (wer liefert was)", "domain": "wlw.de", "focus": "Heavy industrial, engineering", "scope": "national", "countries": ["DE"], "searchUrl": null },
   { "name": "IndiaMART", "domain": "indiamart.com", "focus": "General industrial, consumer goods", "scope": "national", "countries": ["IN"], "searchUrl": null },
-  { "name": "TradeIndia", "domain": "tradeindia.com", "focus": "Industrial goods, textiles, chemicals", "scope": "national", "countries": ["IN"], "searchUrl": null },
+  { "name": "TradeIndia", "domain": "tradeindia.com", "focus": "Industrial goods, textiles, chemicals", "scope": "national", "countries": ["IN"], "searchUrl": "https://www.tradeindia.com/search.html?keyword={q}" },
   { "name": "Indonetwork", "domain": "indonetwork.co.id", "focus": "General trade, industrial supplies", "scope": "national", "countries": ["ID"], "searchUrl": null },
   { "name": "Indotrading", "domain": "indotrading.com", "focus": "Industrial products, materials, equipment", "scope": "national", "countries": ["ID"], "searchUrl": null },
   { "name": "IPROS", "domain": "ipros.jp", "focus": "Manufacturing tech, automation", "scope": "national", "countries": ["JP"], "searchUrl": null },
