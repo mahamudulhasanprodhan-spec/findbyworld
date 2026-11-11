@@ -11,6 +11,8 @@
   TradeIndia, Made-in-China, Global Sources and EC21. Each keeps a "via Google" link.
 - Added the `{q-}` placeholder for sites that write the search with hyphens in the path.
 - IndiaMART, Thomasnet and Europages keep their Google links.
+- The product and MOQ boxes now show a clear focus ring in the accent color. Before,
+  the MOQ box showed no focus and the product box only a faint shadow.
 - `docs/DATA.md` explains scope, direct search links, Kompass and why the MOQ is not
   sent to the directories.
 
