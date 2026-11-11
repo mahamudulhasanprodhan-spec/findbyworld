@@ -28,6 +28,14 @@ from the reviewed research file *Comprehensive Global B2B Directories – All Co
 
 No installs, no build step, no API keys.
 
+The page loads its data files through a web server, so double-clicking `index.html`
+shows a message asking you to use Live Server.
+
+## Edit the countries and directories
+
+Countries and directories live in `data/countries.json` and `data/platforms.json`.
+You can edit them without touching any code. See [docs/DATA.md](docs/DATA.md).
+
 ## Project structure
 
 ```
@@ -35,9 +43,12 @@ index.html                     the page structure (no inline CSS or JS)
 css/styles.css                 all styles, including dark mode
 js/links.js                    builds every search URL (loaded first)
 js/search.js                   renders results, country filter, copy message
-js/app.js                      data, form handlers, home ↔ results switching (loaded last)
+js/app.js                      loads the data, form handlers, home ↔ results switching (loaded last)
+data/countries.json            196 countries: name, ISO code, region
+data/platforms.json            41 B2B directories and the countries they cover
 CLAUDE.md                      rules for the AI coding assistant
 docs/PLAN.md                   milestones M1–M8
+docs/DATA.md                   every data field and how to add a country or platform
 docs/CHANGELOG.md              what changed in each milestone
 .github/pull_request_template.md
 ```

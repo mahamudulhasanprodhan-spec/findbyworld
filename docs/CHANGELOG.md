@@ -1,5 +1,16 @@
 # Changelog
 
+## M3: Move the data into JSON (2026-11-10)
+
+- Moved the 196 countries into `data/countries.json` (with a region for each) and the
+  41 platforms into `data/platforms.json` (one record per platform, with `scope`,
+  `countries` and `searchUrl: null`).
+- Added the optional `focusByCountry` field so Thomasnet and TradeKey keep their
+  different descriptions per country.
+- `js/app.js` now loads both files with `fetch`, skips bad records with a console
+  warning, and shows a message on the page if the files cannot be loaded.
+- Added `docs/DATA.md` and updated `README.md`. Results are unchanged.
+
 ## M2: Split the single file (2026-11-10)
 
 - Moved all styles from `index.html` into `css/styles.css`, unchanged.
