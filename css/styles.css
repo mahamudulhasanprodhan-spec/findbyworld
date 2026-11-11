@@ -63,6 +63,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .jump input{border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--bg);flex:1 1 220px;min-width:0}
 h2.sec{font-family:var(--f-logo);font-size:1.05rem;margin:6px 0 0;font-weight:600}
 .sec-note{color:var(--muted);font-size:.86rem;margin:-14px 0 0}
+h2.sec small{font-family:var(--f-body);font-weight:400;font-size:.82rem;color:var(--muted);margin-left:6px}
+.region{display:grid;gap:14px}
+.res-note,.sub{color:var(--muted);font-size:.86rem;margin:0}
 
 .country{display:grid;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line)}
 .c-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}

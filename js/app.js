@@ -3,7 +3,7 @@
 // ---------- DATA ----------
 // Filled by loadData() from data/countries.json and data/platforms.json (see docs/DATA.md).
 // PLATFORMS: { "Country name": [[platform name, domain, what it covers, scope, searchUrl], ...] }
-// COUNTRIES: [[name, ISO code], ...]
+// COUNTRIES: [[name, ISO code, region], ...]
 let PLATFORMS={},COUNTRIES=[];
 let dataReady=false;
 const REGIONS=["Africa","Asia","Europe","Middle East","North America","Latin America & Caribbean","Oceania"];
@@ -42,7 +42,7 @@ async function loadData(){
     cs.forEach((c,i)=>{
       const why=countryProblem(c)||(nameOf[c.iso]?"duplicate iso":"");
       if(why){console.warn(`countries.json: skipped record ${i+1} (${why})`,c);return;}
-      nameOf[c.iso]=c.name;countries.push([c.name,c.iso]);
+      nameOf[c.iso]=c.name;countries.push([c.name,c.iso,c.region]);
     });
     ps.forEach((p,i)=>{
       const why=platformProblem(p);
