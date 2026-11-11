@@ -36,7 +36,10 @@ Allowed regions:
 - `Latin America & Caribbean` (includes Mexico and Central America)
 - `Oceania`
 
-The page does not use `region` yet. Milestone M5 groups results by region.
+The results page groups countries by region, in this order: Asia, Africa, Europe,
+Middle East, North America, Latin America & Caribbean, Oceania. Within a region,
+countries with their own platforms come first, and countries keep the order they have
+in the file. The region chips above the results filter the list to one region.
 
 ## platforms.json
 

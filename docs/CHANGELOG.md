@@ -1,5 +1,16 @@
 # Changelog
 
+## M5: Regions and recent searches (2026-11-11)
+
+- Results are grouped by region (Asia, Africa, Europe, Middle East, North America,
+  Latin America & Caribbean, Oceania). In each region, countries with their own
+  directories come first.
+- Added region chips ("All" plus the seven regions) that filter the results and work
+  together with "Jump to a country".
+- The last 5 searches (product and MOQ) are saved in `localStorage` and shown as chips
+  under the home search bar, with a "Clear" button.
+- Updated `docs/DATA.md` and `README.md`.
+
 ## M4: Country-aware and direct search links (2026-11-10)
 
 - Searches on international platforms now include the country, so Canada → Thomasnet

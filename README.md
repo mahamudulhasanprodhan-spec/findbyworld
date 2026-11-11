@@ -12,6 +12,9 @@ country by country:
   a search link for your product.
 - **166 more countries** through global directories (Kompass) and web search.
 - A **ready-to-copy message** to send suppliers, including your order quantity.
+- Results are **grouped by region**, with chips to show one region at a time and a
+  "Jump to a country" box.
+- Your **last 5 searches** are remembered in your browser and shown on the home page.
 
 FindByWorld is a meta-search page: it does not store supplier listings. It sends your
 search to the right directory in each country. The country and platform list comes
