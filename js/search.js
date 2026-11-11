@@ -23,7 +23,7 @@ function render(filter=""){
         <div class="hit"><span class="u">${esc(dom)}</span>
           <a class="t" href="${platformSearch(p,q,n)}" target="_blank" rel="noopener">${qd} suppliers on ${esc(name)}</a>
           <p>${esc(focus)}.${moq?` Ask for MOQ ${esc(moq)} units.`:""}</p></div>`;}).join("")}
-      <div class="more"><a href="${kompass(q,n)}" target="_blank" rel="noopener">Kompass</a><a href="${alibaba(q,n)}" target="_blank" rel="noopener">Alibaba</a><a href="${web(q,n,moq)}" target="_blank" rel="noopener">Web search</a></div>
+      <div class="more">${hasOwnKompass(PLATFORMS[n])?"":`<a href="${kompass(q,n)}" target="_blank" rel="noopener">Kompass</a>`}<a href="${alibaba(q,n)}" target="_blank" rel="noopener">Alibaba</a><a href="${web(q,n,moq)}" target="_blank" rel="noopener">Web search</a></div>
     </article>`).join("");
 
   const restHTML=rest.map(([n,iso])=>`
