@@ -42,7 +42,7 @@ function render(filter=""){
       ${d.map(dedCard).join("")}
       ${o.length?`${d.length?`<p class="sub">More countries in ${esc(r)}, through Kompass and web search</p>`:""}<div class="others">${o.map(restRow).join("")}</div>`:""}
     </section>`;}).join("");
-  const chipsHTML="";
+  const chipsHTML=`<div class="chips" id="regions" role="group" aria-label="Filter by region">${["",...REGION_ORDER].map(r=>`<button type="button" class="chip" data-region="${esc(r)}" aria-pressed="${r===currentRegion}">${esc(r||"All")}</button>`).join("")}</div>`;
 
   $("#res").innerHTML=`
     <p class="summary">Results for <b>${qd}</b>${moq?` · MOQ <b>${esc(moq)}</b> units`:""}${currentRegion?` in <b>${esc(currentRegion)}</b>`:""} — <b>${ded.length}</b> countries with dedicated directories (${totalPlat} platforms) and <b>${rest.length}</b> more through global directories.</p>
@@ -55,6 +55,7 @@ function render(filter=""){
     ${list.length?`<p class="res-note">Each region lists countries with their own directories first. The other countries link to Kompass and web search.</p>${regionsHTML}`:""}
     ${!list.length?`<p class="empty">No country matches "${esc(filter)}"${currentRegion?` in ${esc(currentRegion)}`:""}.</p>`:""}
     <p class="disclaimer">FindByWorld links to third-party directories and does not verify suppliers. Check business licences, ask for samples and use secure payment terms before ordering.</p>`;
+  $("#regions").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;currentRegion=b.dataset.region;render($("#cf").value);$(`#regions .chip[aria-pressed="true"]`).focus();});
   const cf=$("#cf");cf.addEventListener("input",e=>{const pos=e.target.selectionStart;render(e.target.value);const n=$("#cf");n.focus();n.setSelectionRange(pos,pos);});
   $("#copy").addEventListener("click",()=>{const t=$("#msgtext").textContent;
     try{navigator.clipboard.writeText(t).then(()=>toast("Message copied"),()=>selectText());}catch(_){selectText();}});

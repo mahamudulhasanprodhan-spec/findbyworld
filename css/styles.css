@@ -65,6 +65,9 @@ h2.sec{font-family:var(--f-logo);font-size:1.05rem;margin:6px 0 0;font-weight:60
 .sec-note{color:var(--muted);font-size:.86rem;margin:-14px 0 0}
 h2.sec small{font-family:var(--f-body);font-weight:400;font-size:.82rem;color:var(--muted);margin-left:6px}
 .region{display:grid;gap:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:.86rem}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
 .res-note,.sub{color:var(--muted);font-size:.86rem;margin:0}
 
 .country{display:grid;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line)}
