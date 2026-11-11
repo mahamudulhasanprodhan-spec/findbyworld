@@ -3,9 +3,12 @@
 // ---------- SEARCH LINKS ----------
 const g=q=>"https://www.google.com/search?q="+encodeURIComponent(q);
 const siteSearch=(domain,q,country)=>g(`site:${domain} ${q}${country?" "+country:""}`);
-// A platform is [name, domain, focus, scope]. International platforms list suppliers from
+// A platform is [name, domain, focus, scope, searchUrl]. International platforms list suppliers from
 // many countries, so their search also includes the country the link is shown under.
 const platformSearch=(p,q,country)=>siteSearch(p[1],q,p[3]==="international"?country:"");
+// The platform's own search page, built from its searchUrl template ("" when it has none).
+// {q} is replaced by the product and {country} by the country name, both URL-encoded.
+const platformDirect=(p,q,country)=>p[4]?p[4].replace(/\{q\}/g,()=>encodeURIComponent(q)).replace(/\{country\}/g,()=>encodeURIComponent(country)):"";
 const kompass=(q,country)=>siteSearch("kompass.com",q,country);
 // True when a country's platform list already has its own Kompass site (e.g. gb.kompass.com).
 // That site is then the main result, so the small "Kompass" link is not shown again.

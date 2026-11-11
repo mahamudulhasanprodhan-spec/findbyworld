@@ -19,10 +19,11 @@ function render(filter=""){
   const dedHTML=ded.map(([n,iso])=>`
     <article class="country" id="c-${iso}">
       <div class="c-head"><span class="iso">${iso}</span><h3>${esc(n)}</h3><small>${PLATFORMS[n].length} director${PLATFORMS[n].length>1?"ies":"y"}</small></div>
-      ${PLATFORMS[n].map(p=>{const [name,dom,focus]=p;return `
+      ${PLATFORMS[n].map(p=>{const [name,dom,focus]=p;const direct=platformDirect(p,q,n),viaGoogle=platformSearch(p,q,n);return `
         <div class="hit"><span class="u">${esc(dom)}</span>
-          <a class="t" href="${platformSearch(p,q,n)}" target="_blank" rel="noopener">${qd} suppliers on ${esc(name)}</a>
-          <p>${esc(focus)}.${moq?` Ask for MOQ ${esc(moq)} units.`:""}</p></div>`;}).join("")}
+          <a class="t" href="${esc(direct||viaGoogle)}" target="_blank" rel="noopener">${qd} suppliers on ${esc(name)}</a>
+          <p>${esc(focus)}.${moq?` Ask for MOQ ${esc(moq)} units.`:""}</p>
+          ${direct?`<a class="via" href="${viaGoogle}" target="_blank" rel="noopener" aria-label="${qd} on ${esc(name)} via Google">via Google</a>`:""}</div>`;}).join("")}
       <div class="more">${hasOwnKompass(PLATFORMS[n])?"":`<a href="${kompass(q,n)}" target="_blank" rel="noopener">Kompass</a>`}<a href="${alibaba(q,n)}" target="_blank" rel="noopener">Alibaba</a><a href="${web(q,n,moq)}" target="_blank" rel="noopener">Web search</a></div>
     </article>`).join("");
 
