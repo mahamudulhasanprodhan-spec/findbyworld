@@ -4,7 +4,7 @@
   { "name": "B2Bmap", "domain": "b2bmap.com", "focus": "Textiles, jute, general B2B", "scope": "national", "countries": ["BD"], "searchUrl": null },
   { "name": "ExportHub", "domain": "exporthub.com", "focus": "Exporters, garments", "scope": "international", "countries": ["BD"], "searchUrl": null },
   { "name": "B2Brazil", "domain": "b2brazil.com", "focus": "General B2B, agribusiness", "scope": "national", "countries": ["BR"], "searchUrl": null },
-  { "name": "Alibaba", "domain": "alibaba.com", "focus": "General manufacturing, auto parts", "scope": "international", "countries": ["CN"], "searchUrl": null },
+  { "name": "Alibaba", "domain": "alibaba.com", "focus": "General manufacturing, auto parts", "scope": "international", "countries": ["CN"], "searchUrl": "https://www.alibaba.com/search/page?SearchScene=proSearch&SearchText={q}&pro=true" },
   { "name": "Global Sources", "domain": "globalsources.com", "focus": "Electronics, auto parts", "scope": "international", "countries": ["CN"], "searchUrl": null },
   { "name": "Made-in-China", "domain": "made-in-china.com", "focus": "Machinery, industrial goods, consumer products", "scope": "international", "countries": ["CN"], "searchUrl": null },
   { "name": "Kompass Colombia", "domain": "co.kompass.com", "focus": "Industrial and general B2B companies", "scope": "national", "countries": ["CO"], "searchUrl": null },
