@@ -31,7 +31,11 @@ No installs, no build step, no API keys.
 ## Project structure
 
 ```
-index.html                     the page (split into css/ and js/ in milestone M2)
+index.html                     the page structure (no inline CSS or JS)
+css/styles.css                 all styles, including dark mode
+js/links.js                    builds every search URL (loaded first)
+js/search.js                   renders results, country filter, copy message
+js/app.js                      data, form handlers, home ↔ results switching (loaded last)
 CLAUDE.md                      rules for the AI coding assistant
 docs/PLAN.md                   milestones M1–M8
 docs/CHANGELOG.md              what changed in each milestone
