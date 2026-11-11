@@ -1,456 +1,249 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>FindByWorld Supplier Directory</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Search suppliers country by country across the world&#39;s B2B directories.">
+<title>FindByWorld</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Layout: sticky indigo masthead with tabs; directory = filter rail left + card grid right, stacking to one column on phones */
+/* Layout: search-engine home (centered logo + one search row), then a results page with a compact top bar and country-by-country result groups */
 :root{
-  --bg:#f6f6fa; --surface:#ffffff; --ink:#1b1d33; --muted:#5d6080; --line:#dcdde9;
-  --indigo:#2d3a8c; --indigo-ink:#ffffff; --indigo-soft:#e6e8f6;
-  --saffron:#b86b00; --saffron-soft:#fbefd9; --green:#1f7a4d; --green-soft:#ddf1e6;
-  --mast:#1e2766; --mast-ink:#eef0ff; --mast-muted:#aeb4e4;
-  --shadow:0 1px 2px rgba(27,29,51,.06),0 4px 14px rgba(27,29,51,.06);
-  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --bg:#ffffff; --surface:#f4f6f9; --ink:#1a1f2b; --muted:#5f6878; --line:#dde2ea;
+  --link:#1d4fd8; --url:#18794e; --accent:#0b6e8a; --accent-ink:#ffffff; --chip:#e8eef6;
+  --f-logo:"Sora",ui-sans-serif,system-ui,sans-serif;
   --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#12131f; --surface:#1b1d2e; --ink:#e8e9f5; --muted:#9da0bf; --line:#2e3150;
-  --indigo:#8f9bf0; --indigo-ink:#12131f; --indigo-soft:#262b52;
-  --saffron:#f0b14d; --saffron-soft:#3a2c14; --green:#5fcf93; --green-soft:#16362a;
-  --mast:#171c45; --mast-ink:#eef0ff; --mast-muted:#9ea5dc;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25); color-scheme:dark}}
+  --bg:#111418; --surface:#1b2027; --ink:#e6e9ef; --muted:#9aa3b2; --line:#2c333d;
+  --link:#8ab4ff; --url:#6fd3a0; --accent:#4fc0dc; --accent-ink:#0c1116; --chip:#232a33; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#12131f; --surface:#1b1d2e; --ink:#e8e9f5; --muted:#9da0bf; --line:#2e3150;
-  --indigo:#8f9bf0; --indigo-ink:#12131f; --indigo-soft:#262b52;
-  --saffron:#f0b14d; --saffron-soft:#3a2c14; --green:#5fcf93; --green-soft:#16362a;
-  --mast:#171c45; --mast-ink:#eef0ff; --mast-muted:#9ea5dc;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25); color-scheme:dark}
-
+  --bg:#111418; --surface:#1b2027; --ink:#e6e9ef; --muted:#9aa3b2; --line:#2c333d;
+  --link:#8ab4ff; --url:#6fd3a0; --accent:#4fc0dc; --accent-ink:#0c1116; --chip:#232a33; color-scheme:dark}
 *{box-sizing:border-box}
+html,body{height:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--mast)}
-.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
-button,input,select,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
-.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.logo{font-family:var(--f-logo);font-weight:700;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.logo b{color:var(--accent);font-weight:700}
 
-/* masthead */
-header.mast{background:var(--mast);color:var(--mast-ink);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
-.mast-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px 0;flex-wrap:wrap}
-.brand{display:flex;align-items:baseline;gap:10px}
-.brand h1{font-size:1.5rem;letter-spacing:-.01em}
-.brand span{color:var(--mast-muted);font-size:.85rem}
-.weave{height:6px;background:repeating-linear-gradient(90deg,var(--mast-muted) 0 6px,transparent 6px 12px);opacity:.35;margin-top:12px}
-nav.tabs{display:flex;gap:4px;overflow-x:auto}
-nav.tabs a{color:var(--mast-muted);text-decoration:none;padding:10px 14px;border-bottom:3px solid transparent;font-weight:500;white-space:nowrap}
-nav.tabs a[aria-current="page"]{color:var(--mast-ink);border-color:var(--mast-ink)}
-.sample-note{font-size:.8rem;color:var(--mast-muted);padding-block:6px 10px}
+/* search form */
+.sform{display:flex;gap:8px;flex-wrap:wrap;width:100%}
+.qbox{flex:1 1 280px;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:999px;padding:0 18px;background:var(--bg);min-width:0}
+.qbox:focus-within{box-shadow:0 1px 8px rgba(30,50,90,.18);border-color:transparent}
+.qbox svg{flex:none;color:var(--muted)}
+.qbox input{border:none;outline:none;background:transparent;padding:13px 0;width:100%;min-width:0;font-size:1rem}
+.moq{flex:0 0 auto;display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:0 14px;background:var(--bg)}
+.moq label{font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.05em}
+.moq input{border:none;outline:none;background:transparent;width:80px;padding:12px 0;font-family:var(--f-mono);font-size:.95rem}
+.go{flex:0 0 auto;border:none;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:0 24px;font-weight:600;cursor:pointer;min-height:46px}
+.go:hover{filter:brightness(1.08)}
 
-/* intro */
-.intro{padding-block:28px 8px;display:grid;gap:8px}
-.intro h2{font-size:clamp(1.5rem,3.4vw,2.2rem);max-width:22ch}
-.intro p{color:var(--muted);max-width:62ch;margin:0}
-.stats{display:flex;gap:24px;flex-wrap:wrap;margin-top:8px}
-.stats div{display:grid}
-.stats b{font-family:var(--f-display);font-size:1.4rem}
-.stats small{color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+/* home */
+#home{min-height:100%;display:grid;place-items:center;padding-block:40px}
+.home-inner{width:100%;max-width:640px;display:grid;gap:22px;justify-items:center;text-align:center}
+.home-inner .logo{font-size:clamp(2.6rem,9vw,4rem)}
+.tag{color:var(--muted);margin:-12px 0 0}
+.tries{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font-size:.88rem;color:var(--muted);align-items:center}
+.tries button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:.86rem}
+.foot-note{font-size:.8rem;color:var(--muted);max-width:52ch}
 
-/* directory layout */
-.dir{display:grid;grid-template-columns:270px minmax(0,1fr);gap:28px;padding-block:20px 48px;align-items:start}
-@media (max-width:820px){.dir{grid-template-columns:minmax(0,1fr)}}
-aside.filters{display:grid;gap:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 110px)}
-@media (max-width:820px){aside.filters{position:static}}
-.fgroup{display:grid;gap:8px}
-.fgroup>label,.fgroup>.lbl{font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
-.search{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
-select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:.84rem;cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--indigo);color:var(--indigo-ink);border-color:var(--indigo)}
-.check{display:flex;align-items:center;gap:8px;font-size:.9rem;cursor:pointer}
-.check input{accent-color:var(--indigo);width:16px;height:16px}
-.moqval{font-family:var(--f-mono);font-size:.9rem}
-input[type=range]{width:100%;accent-color:var(--indigo)}
-.reset{background:none;border:none;color:var(--indigo);cursor:pointer;padding:0;justify-self:start;font-weight:500}
+/* results */
+#results{min-height:100%}
+.top{border-bottom:1px solid var(--line);padding-block:14px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.top-row{max-width:1100px;margin:0 auto;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.top-row .logo{font-size:1.45rem}
+.top-row .sform{flex:1 1 520px}
+.res{max-width:760px;margin:0 auto 0 max(0px,calc((100% - 1100px)/2));padding-block:18px 48px;display:grid;gap:22px}
+@media (max-width:1132px){.res{margin:0 auto}}
+.summary{color:var(--muted);font-size:.9rem;margin:0}
+.summary b{color:var(--ink)}
+.msg{background:var(--surface);border-radius:12px;padding:14px 16px;display:grid;gap:8px}
+.msg-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.msg-head span{font-weight:600;font-size:.9rem}
+.msg p{margin:0;font-size:.9rem;white-space:pre-wrap}
+.small-btn{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:.84rem;font-weight:500}
+.jump{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.jump input{border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--bg);flex:1 1 220px;min-width:0}
+h2.sec{font-family:var(--f-logo);font-size:1.05rem;margin:6px 0 0;font-weight:600}
+.sec-note{color:var(--muted);font-size:.86rem;margin:-14px 0 0}
 
-.resbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-.resbar p{margin:0;color:var(--muted)}
-.resbar select{width:auto}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:10px;grid-template-rows:auto auto 1fr auto;cursor:pointer;text-align:left;transition:border-color .15s,transform .15s}
-.card:hover{border-color:var(--indigo);transform:translateY(-1px)}
-.card-top{display:flex;justify-content:space-between;gap:8px;align-items:start}
-.card h3{font-size:1.08rem}
-.loc{color:var(--muted);font-size:.85rem}
-.flag{font-size:1.1rem;line-height:1}
-.prods{font-size:.88rem;margin:0}
-.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-top:1px dashed var(--line);padding-top:10px}
-.facts div{display:grid}
-.facts small{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}
-.facts span{font-family:var(--f-mono);font-size:.86rem;font-variant-numeric:tabular-nums}
-.badges{display:flex;flex-wrap:wrap;gap:5px}
-.badge{font-size:.72rem;padding:2px 8px;border-radius:4px;background:var(--indigo-soft);color:var(--ink)}
-.badge.ver{background:var(--green-soft);color:var(--green);font-weight:600}
-.badge.low{background:var(--saffron-soft);color:var(--saffron);font-weight:600}
-.empty{padding:40px 16px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px}
+.country{display:grid;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.c-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.iso{font-family:var(--f-mono);font-size:.74rem;background:var(--chip);border-radius:5px;padding:2px 6px}
+.c-head h3{margin:0;font-size:1.12rem;font-weight:600}
+.c-head small{color:var(--muted)}
+.hit{display:grid;gap:1px;min-width:0}
+.hit .u{color:var(--url);font-size:.82rem;word-break:break-all}
+.hit a.t{color:var(--link);font-size:1.08rem;text-decoration:none;font-weight:500}
+.hit a.t:hover{text-decoration:underline}
+.hit p{margin:0;color:var(--muted);font-size:.9rem}
+.more{display:flex;gap:14px;flex-wrap:wrap;font-size:.86rem}
+.more a{color:var(--link);text-decoration:none}
+.more a:hover{text-decoration:underline}
 
-/* dialog */
-dialog{border:none;border-radius:14px;padding:0;max-width:640px;width:calc(100% - 32px);background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
-dialog::backdrop{background:rgba(15,17,40,.55)}
-.dlg-head{padding:20px 22px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
-.dlg-body{padding:18px 22px 22px;display:grid;gap:16px;max-height:70vh;overflow:auto}
-.close{background:none;border:1px solid var(--line);border-radius:8px;width:34px;height:34px;cursor:pointer;flex:none}
-.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.kv div{display:grid;gap:2px}
-.kv small{color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}
-.kv span{font-family:var(--f-mono);font-size:.9rem}
-.contact{display:grid;gap:8px;background:var(--bg);border-radius:10px;padding:14px}
-.crow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.crow code{font-family:var(--f-mono);font-size:.9rem;word-break:break-all}
-.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;cursor:pointer;text-decoration:none;color:var(--ink);font-size:.86rem;font-weight:500}
-.btn.primary{background:var(--indigo);border-color:var(--indigo);color:var(--indigo-ink)}
-.btn.wa{background:var(--green);border-color:var(--green);color:var(--surface)}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-
-/* RFQ */
-.rfq{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;padding-block:20px 48px;align-items:start}
-@media (max-width:820px){.rfq{grid-template-columns:minmax(0,1fr)}}
-.rfq-list{display:grid;gap:12px}
-.rfq-item{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:8px}
-.rfq-item h3{font-size:1.05rem}
-.meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:.84rem}
-.meta b{color:var(--ink);font-family:var(--f-mono);font-weight:500}
-form.post{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:12px}
-form.post input,form.post textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
-form.post label{display:grid;gap:4px;font-size:.84rem;font-weight:500}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.match{font-size:.84rem;color:var(--green);font-weight:500}
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:.9rem;z-index:20}
-
-/* Plans */
-.plans{padding-block:20px 48px;display:grid;gap:24px}
-.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.tier{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:10px;align-content:start}
-.tier.feat{border:2px solid var(--indigo)}
-.tier .who{font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
-.tier .price{font-family:var(--f-display);font-size:1.9rem}
-.tier .price small{font-family:var(--f-body);font-size:.85rem;color:var(--muted);font-weight:400}
-.tier ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.9rem}
-.roadmap{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:12px}
-.roadmap ol{margin:0;padding-left:20px;display:grid;gap:8px}
-.roadmap li span{color:var(--muted)}
-footer{border-top:1px solid var(--line);padding-block:18px;color:var(--muted);font-size:.82rem}
-@media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
+.others{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px 18px}
+.orow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);min-width:0}
+.orow .n{display:flex;align-items:center;gap:8px;min-width:0}
+.orow .n span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.orow .l{display:flex;gap:10px;font-size:.84rem;flex:none}
+.orow .l a{color:var(--link);text-decoration:none}
+.empty{color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;font-size:.9rem;z-index:20}
+.disclaimer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);padding-top:14px}
 </style>
-<style>body{margin:0;font-size:14px}[hidden]{display:none!important}img{max-width:100%}</style></head><body>
+<style>body{margin:0}[hidden]{display:none!important}</style></head><body>
 
-<header class="mast">
-  <div class="wrap">
-    <div class="mast-row">
-      <div class="brand"><h1>FindByWorld</h1><span>Diverse textile &amp; leather suppliers</span></div>
-      <nav class="tabs" aria-label="Sections">
-        <a href="#directory" data-view="directory">Directory</a>
-        <a href="#rfq" data-view="rfq">RFQ board</a>
-        <a href="#plans" data-view="plans">Plans</a>
-      </nav>
-    </div>
-  </div>
-  <div class="weave"></div>
-</header>
-
-<main>
-<section id="view-directory" class="wrap">
-  <div class="intro">
-    <h2>Find small-batch makers beyond the usual sourcing hubs</h2>
-    <p>Search verified apparel, leather and home-textile suppliers in Kenya, Egypt, India, Vietnam and Portugal. Filter by minimum order, certifications and ownership. All listings are fictional sample data for this prototype.</p>
-    <div class="stats" id="stats"></div>
-  </div>
-  <div class="dir">
-    <aside class="filters" aria-label="Filters">
-      <div class="fgroup">
-        <label for="q">Search</label>
-        <input id="q" class="search" type="search" placeholder="Product, company or city">
+<section id="home" class="gut">
+  <div class="home-inner">
+    <a class="logo" href="#">Find<b>By</b>World</a>
+    <p class="tag">Search suppliers country by country, across the world's B2B directories.</p>
+    <form class="sform" id="f-home" role="search">
+      <div class="qbox">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q-home" type="search" placeholder="What product do you need? e.g. bicycles" aria-label="Product" required>
       </div>
-      <div class="fgroup">
-        <label for="region">Region</label>
-        <select id="region"></select>
-      </div>
-      <div class="fgroup">
-        <label for="country">Country</label>
-        <select id="country"></select>
-      </div>
-      <div class="fgroup">
-        <span class="lbl">Category</span>
-        <div class="chips" id="cats"></div>
-      </div>
-      <div class="fgroup">
-        <label for="moq">Max minimum order</label>
-        <input id="moq" type="range" min="0" max="5" step="1" value="5">
-        <span class="moqval" id="moqval"></span>
-      </div>
-      <div class="fgroup">
-        <span class="lbl">Supplier profile</span>
-        <div class="chips" id="badges"></div>
-      </div>
-      <label class="check"><input id="verified" type="checkbox"> Verified suppliers only</label>
-      <button class="reset" id="reset" type="button">Clear all filters</button>
-    </aside>
-    <div>
-      <div class="resbar">
-        <p id="count" aria-live="polite"></p>
-        <label class="sr" for="sort" hidden>Sort</label>
-        <select id="sort" aria-label="Sort results">
-          <option value="moq">Lowest minimum order</option>
-          <option value="lead">Fastest lead time</option>
-          <option value="name">Name A–Z</option>
-        </select>
-      </div>
-      <div class="grid" id="grid"></div>
-    </div>
-  </div>
-</section>
-
-<section id="view-rfq" class="wrap" hidden>
-  <div class="intro">
-    <h2>Request for Quote board</h2>
-    <p>Startups post what they need. Matching suppliers in the directory are counted below each request and would be notified in the full product.</p>
-  </div>
-  <div class="rfq">
-    <div class="rfq-list" id="rfqs"></div>
-    <form class="post" id="rfqform">
-      <h3>Post a request</h3>
-      <label>What do you need?<input id="rf-title" required placeholder="e.g. Canvas tote bags with leather handles"></label>
-      <div class="row2">
-        <label>Quantity<input id="rf-qty" type="number" min="1" required value="200"></label>
-        <label>Category<select id="rf-cat"></select></label>
-      </div>
-      <label>Preferred country<select id="rf-country"></select></label>
-      <label>Details<textarea id="rf-notes" rows="3" placeholder="Materials, sizes, target price, deadline"></textarea></label>
-      <p class="match" id="rf-match"></p>
-      <button class="btn primary" type="submit">Post request</button>
+      <div class="moq"><label for="m-home">MOQ</label><input id="m-home" type="number" min="1" inputmode="numeric" placeholder="100" aria-label="Minimum order quantity"></div>
+      <button class="go" type="submit">Search</button>
     </form>
+    <div class="tries">Try:
+      <button type="button" data-q="bicycle" data-m="100">bicycle · 100</button>
+      <button type="button" data-q="cotton t-shirts" data-m="300">cotton t-shirts · 300</button>
+      <button type="button" data-q="leather bags" data-m="50">leather bags · 50</button>
+    </div>
+    <p class="foot-note">FindByWorld searches each country's supplier directories for you. Always verify a supplier before you pay.</p>
   </div>
 </section>
 
-<section id="view-plans" class="wrap" hidden>
-  <div class="intro">
-    <h2>How FindByWorld makes money</h2>
-    <p>Browsing stays free. Revenue comes from buyers who want direct contact details, suppliers who want verification, and founders who want the sourcing done for them.</p>
+<section id="results" hidden>
+  <div class="top gut">
+    <div class="top-row">
+      <a class="logo" href="#" id="home-link">Find<b>By</b>World</a>
+      <form class="sform" id="f-res" role="search">
+        <div class="qbox">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="q-res" type="search" aria-label="Product" required>
+        </div>
+        <div class="moq"><label for="m-res">MOQ</label><input id="m-res" type="number" min="1" inputmode="numeric" placeholder="Any" aria-label="Minimum order quantity"></div>
+        <button class="go" type="submit">Search</button>
+      </form>
+    </div>
   </div>
-  <div class="plans">
-    <div class="tiers">
-      <div class="tier"><span class="who">Buyers</span><h3>Free</h3><div class="price">$0</div>
-        <ul><li>Browse all suppliers and RFQs</li><li>Filter by country, MOQ and certification</li><li>Post one RFQ per month</li></ul></div>
-      <div class="tier feat"><span class="who">Buyers</span><h3>Pro</h3><div class="price">$19<small> / month</small></div>
-        <ul><li>Verified WhatsApp numbers and emails</li><li>Factory addresses and map pins</li><li>Download supplier lists as CSV</li><li>Unlimited RFQs</li></ul></div>
-      <div class="tier"><span class="who">Suppliers</span><h3>Verified badge</h3><div class="price">$50–$200<small> / year</small></div>
-        <ul><li>Business licence and factory check</li><li>Green verified badge</li><li>Top placement in country results</li></ul></div>
-      <div class="tier"><span class="who">Founders</span><h3>Sourcing concierge</h3><div class="price">$300–$500<small> flat</small></div>
-        <ul><li>Our team vets three suppliers</li><li>Collects and compares quotes</li><li>Handles first communication</li></ul></div>
-    </div>
-    <div class="roadmap">
-      <h3>Roadmap after the prototype</h3>
-      <ol>
-        <li><b>Replace sample data with 100 real suppliers</b> <span>from export promotion agencies, trade-fair exhibitor lists and business registries.</span></li>
-        <li><b>Test with founders</b> <span>on r/Entrepreneur, Indie Hackers and campus entrepreneurship groups.</span></li>
-        <li><b>Add accounts and payments</b> <span>with a database such as Supabase and a payment provider such as Stripe.</span></li>
-        <li><b>Launch "claim your listing"</b> <span>so suppliers verify and update their own profiles over email or WhatsApp.</span></li>
-      </ol>
-    </div>
+  <div class="gut">
+    <div class="res" id="res"></div>
   </div>
 </section>
-</main>
-
-<footer><div class="wrap">FindByWorld is a class-project prototype. Every company, phone number and email shown is fictional sample data.</div></footer>
-
-<dialog id="dlg" aria-labelledby="dlg-title"></dialog>
 <div class="toast" id="toast" hidden></div>
 
 <script>
-const REGION={Kenya:"Africa",Egypt:"Africa",India:"Asia",Vietnam:"Asia",Portugal:"Europe"};
-const FLAG={Kenya:"🇰🇪",Egypt:"🇪🇬",India:"🇮🇳",Vietnam:"🇻🇳",Portugal:"🇵🇹"};
-const CATS=["Cotton Apparel","Knitwear","Leather Goods","Footwear","Home Textiles"];
-const BADGES=["Women-Owned","Eco / Fair Trade","Artisan","Industrial","AfCFTA"];
-const MOQ_STEPS=[50,100,250,500,1000,Infinity];
+// ---------- DATA ----------
+// Country-specific platforms, from "Comprehensive Global B2B Directories – All Countries (Reviewed)".
+// [platform name, domain, what it covers]
+const PLATFORMS={
+  "Argentina":[["Kompass Argentina","ar.kompass.com","Industrial and general B2B companies"]],
+  "Australia":[["IndustrySearch","industrysearch.com.au","Industrial equipment and components"]],
+  "Bangladesh":[["B2Bmap","b2bmap.com","Textiles, jute, general B2B"],["ExportHub","exporthub.com","Exporters, garments"]],
+  "Brazil":[["B2Brazil","b2brazil.com","General B2B, agribusiness"]],
+  "Canada":[["Thomasnet","thomasnet.com","Industrial manufacturing and components"]],
+  "China":[["Alibaba","alibaba.com","General manufacturing, auto parts"],["Global Sources","globalsources.com","Electronics, auto parts"],["Made-in-China","made-in-china.com","Machinery, industrial goods, consumer products"]],
+  "Colombia":[["Kompass Colombia","co.kompass.com","Industrial and general B2B companies"]],
+  "France":[["DirectIndustry","directindustry.com","Industrial machinery"],["Europages","europages.com","European manufacturers and wholesalers"]],
+  "Germany":[["IndustryStock","industrystock.com","Machinery, engineering, components"],["WLW (wer liefert was)","wlw.de","Heavy industrial, engineering"]],
+  "India":[["IndiaMART","indiamart.com","General industrial, consumer goods"],["TradeIndia","tradeindia.com","Industrial goods, textiles, chemicals"]],
+  "Indonesia":[["Indonetwork","indonetwork.co.id","General trade, industrial supplies"],["Indotrading","indotrading.com","Industrial products, materials, equipment"]],
+  "Japan":[["IPROS","ipros.jp","Manufacturing tech, automation"]],
+  "Malaysia":[["MATRADE","matrade.gov.my","Official exporter directory"]],
+  "Mexico":[["Cosmos Online","cosmos.com.mx","Chemicals, machinery, industrial goods"],["QuimiNet","quiminet.com","Industrial goods, chemicals"]],
+  "Morocco":[["Kompass Morocco","ma.kompass.com","Industrial and general B2B companies"]],
+  "Pakistan":[["TradeKey","tradekey.com","Textiles, leather, sports goods"]],
+  "Peru":[["Kompass Peru","pe.kompass.com","Industrial and general B2B companies"]],
+  "Philippines":[["Yellow Pages Philippines","yellow-pages.ph","General businesses and suppliers"]],
+  "Saudi Arabia":[["Saudi Exports","saudiexports.sa","Official Saudi exporter resource"],["TradeKey","tradekey.com","General merchandise, materials"]],
+  "Singapore":[["Singapore Business Federation","sbf.org.sg","Business network and trade resources"]],
+  "South Africa":[["Africa Business Pages","africa-business.com","General trade, African suppliers"],["Kompass South Africa","za.kompass.com","Industrial and general B2B companies"]],
+  "South Korea":[["EC21","ec21.com","Machinery, electronics"],["tradeKorea","tradekorea.com","General export"]],
+  "Spain":[["SoloStocks","solostocks.com","Wholesale goods, machinery, supplies"]],
+  "Taiwan":[["Taiwantrade","taiwantrade.com","IT, auto parts, hardware"]],
+  "Thailand":[["Thailand YellowPages","yellowpages.co.th","Industrial and general suppliers"]],
+  "Turkey":[["TurkishExporter","turkishexporter.com.tr","Textiles, apparel, machinery, food"]],
+  "United Arab Emirates":[["Tradeling","tradeling.com","Wholesale food, consumer and business supplies"]],
+  "United Kingdom":[["Applegate","applegate.co.uk","Engineering, plastics"],["Kompass UK","gb.kompass.com","Industrial and general B2B companies"]],
+  "United States":[["Thomasnet","thomasnet.com","Industrial, custom manufacturing"],["MFG.com","mfg.com","Custom machining, CNC, fabrication"]],
+  "Vietnam":[["VietnamExport","vietnamexport.com","Textiles, agriculture, footwear"]]
+};
+// All countries [name, ISO code]
+const COUNTRIES=[["Afghanistan","AF"],["Albania","AL"],["Algeria","DZ"],["Andorra","AD"],["Angola","AO"],["Antigua and Barbuda","AG"],["Argentina","AR"],["Armenia","AM"],["Australia","AU"],["Austria","AT"],["Azerbaijan","AZ"],["Bahamas","BS"],["Bahrain","BH"],["Bangladesh","BD"],["Barbados","BB"],["Belarus","BY"],["Belgium","BE"],["Belize","BZ"],["Benin","BJ"],["Bhutan","BT"],["Bolivia","BO"],["Bosnia and Herzegovina","BA"],["Botswana","BW"],["Brazil","BR"],["Brunei","BN"],["Bulgaria","BG"],["Burkina Faso","BF"],["Burundi","BI"],["Cabo Verde","CV"],["Cambodia","KH"],["Cameroon","CM"],["Canada","CA"],["Central African Republic","CF"],["Chad","TD"],["Chile","CL"],["China","CN"],["Colombia","CO"],["Comoros","KM"],["Congo","CG"],["Costa Rica","CR"],["Croatia","HR"],["Cuba","CU"],["Cyprus","CY"],["Czechia","CZ"],["DR Congo","CD"],["Denmark","DK"],["Djibouti","DJ"],["Dominica","DM"],["Dominican Republic","DO"],["Ecuador","EC"],["Egypt","EG"],["El Salvador","SV"],["Equatorial Guinea","GQ"],["Eritrea","ER"],["Estonia","EE"],["Eswatini","SZ"],["Ethiopia","ET"],["Fiji","FJ"],["Finland","FI"],["France","FR"],["Gabon","GA"],["Gambia","GM"],["Georgia","GE"],["Germany","DE"],["Ghana","GH"],["Greece","GR"],["Grenada","GD"],["Guatemala","GT"],["Guinea","GN"],["Guinea-Bissau","GW"],["Guyana","GY"],["Haiti","HT"],["Honduras","HN"],["Hungary","HU"],["Iceland","IS"],["India","IN"],["Indonesia","ID"],["Iran","IR"],["Iraq","IQ"],["Ireland","IE"],["Israel","IL"],["Italy","IT"],["Ivory Coast","CI"],["Jamaica","JM"],["Japan","JP"],["Jordan","JO"],["Kazakhstan","KZ"],["Kenya","KE"],["Kiribati","KI"],["Kuwait","KW"],["Kyrgyzstan","KG"],["Laos","LA"],["Latvia","LV"],["Lebanon","LB"],["Lesotho","LS"],["Liberia","LR"],["Libya","LY"],["Liechtenstein","LI"],["Lithuania","LT"],["Luxembourg","LU"],["Madagascar","MG"],["Malawi","MW"],["Malaysia","MY"],["Maldives","MV"],["Mali","ML"],["Malta","MT"],["Marshall Islands","MH"],["Mauritania","MR"],["Mauritius","MU"],["Mexico","MX"],["Micronesia","FM"],["Moldova","MD"],["Monaco","MC"],["Mongolia","MN"],["Montenegro","ME"],["Morocco","MA"],["Mozambique","MZ"],["Myanmar","MM"],["Namibia","NA"],["Nauru","NR"],["Nepal","NP"],["Netherlands","NL"],["New Zealand","NZ"],["Nicaragua","NI"],["Niger","NE"],["Nigeria","NG"],["North Korea","KP"],["North Macedonia","MK"],["Norway","NO"],["Oman","OM"],["Pakistan","PK"],["Palau","PW"],["Palestine","PS"],["Panama","PA"],["Papua New Guinea","PG"],["Paraguay","PY"],["Peru","PE"],["Philippines","PH"],["Poland","PL"],["Portugal","PT"],["Qatar","QA"],["Romania","RO"],["Russia","RU"],["Rwanda","RW"],["Saint Kitts and Nevis","KN"],["Saint Lucia","LC"],["Saint Vincent and the Grenadines","VC"],["Samoa","WS"],["San Marino","SM"],["Sao Tome and Principe","ST"],["Saudi Arabia","SA"],["Senegal","SN"],["Serbia","RS"],["Seychelles","SC"],["Sierra Leone","SL"],["Singapore","SG"],["Slovakia","SK"],["Slovenia","SI"],["Solomon Islands","SB"],["Somalia","SO"],["South Africa","ZA"],["South Korea","KR"],["South Sudan","SS"],["Spain","ES"],["Sri Lanka","LK"],["Sudan","SD"],["Suriname","SR"],["Sweden","SE"],["Switzerland","CH"],["Syria","SY"],["Taiwan","TW"],["Tajikistan","TJ"],["Tanzania","TZ"],["Thailand","TH"],["Timor-Leste","TL"],["Togo","TG"],["Tonga","TO"],["Trinidad and Tobago","TT"],["Tunisia","TN"],["Turkey","TR"],["Turkmenistan","TM"],["Tuvalu","TV"],["Uganda","UG"],["Ukraine","UA"],["United Arab Emirates","AE"],["United Kingdom","GB"],["United States","US"],["Uruguay","UY"],["Uzbekistan","UZ"],["Vanuatu","VU"],["Vatican City","VA"],["Venezuela","VE"],["Vietnam","VN"],["Yemen","YE"],["Zambia","ZM"],["Zimbabwe","ZW"]];
 
-// Fictional sample suppliers. Fields: name, country, city, cat, products, hs, moq, cap (units/month), lead (days), port, badges, certs, verified, wa, email, founded, staff
-const S=[
-["Nairobi Hide & Stitch","Kenya","Nairobi","Leather Goods","Leather tote bags, belts, card holders","4202",50,1200,30,"Mombasa",["Women-Owned","Artisan","AfCFTA"],["LWG Bronze"],true,"+254 700 000 101",2014,38],
-["Rift Valley Cottons","Kenya","Nakuru","Cotton Apparel","Organic cotton tees, hoodies","6109",300,15000,45,"Mombasa",["Eco / Fair Trade","Industrial","AfCFTA"],["GOTS","OEKO-TEX 100"],true,"+254 700 000 102",2009,210],
-["Kisumu Kikoy Collective","Kenya","Kisumu","Home Textiles","Kikoy throws, beach towels, table runners","6302",30,2500,25,"Mombasa",["Women-Owned","Artisan","Eco / Fair Trade","AfCFTA"],["WFTO Fair Trade"],true,"+254 700 000 103",2016,64],
-["Athi River Garments","Kenya","Athi River","Cotton Apparel","Workwear, school uniforms, polos","6205",1000,60000,50,"Mombasa",["Industrial","AfCFTA"],["ISO 9001","WRAP"],true,"+254 700 000 104",2001,850],
-["Maasai Sole Works","Kenya","Kajiado","Footwear","Beaded leather sandals","6403",60,1800,35,"Mombasa",["Women-Owned","Artisan","AfCFTA"],[],false,"+254 700 000 105",2018,22],
-["Mombasa Knit Co.","Kenya","Mombasa","Knitwear","Cotton jumpers, baby knits","6110",200,8000,40,"Mombasa",["Industrial","AfCFTA"],["OEKO-TEX 100"],false,"+254 700 000 106",2012,120],
-["Delta Linen Works","Egypt","Mahalla al-Kubra","Home Textiles","Egyptian cotton bed linen, towels","6302",250,40000,40,"Alexandria",["Industrial","AfCFTA"],["OEKO-TEX 100","ISO 9001"],true,"+20 100 000 0201",1998,640],
-["Cairo Atelier Leather","Egypt","Cairo","Leather Goods","Camel leather wallets, laptop sleeves","4202",100,3000,30,"Port Said",["Artisan","AfCFTA"],["LWG Silver"],true,"+20 100 000 0202",2011,45],
-["Giza Basics","Egypt","6th of October City","Cotton Apparel","Blank tees, pyjamas, underwear","6109",500,80000,35,"Alexandria",["Industrial","AfCFTA"],["BSCI","OEKO-TEX 100"],true,"+20 100 000 0203",2005,1100],
-["Nile Women's Weavers","Egypt","Akhmim","Home Textiles","Hand-woven cushion covers, scarves","6304",40,900,30,"Port Said",["Women-Owned","Artisan","Eco / Fair Trade","AfCFTA"],["WFTO Fair Trade"],false,"+20 100 000 0204",2017,30],
-["Alexandria Step","Egypt","Alexandria","Footwear","Leather loafers, slippers","6403",300,10000,45,"Alexandria",["Industrial","AfCFTA"],["ISO 9001"],false,"+20 100 000 0205",2008,180],
-["Kanpur Saddlery Exports","India","Kanpur","Leather Goods","Saddle bags, duffels, pet leashes","4202",200,20000,45,"Nhava Sheva",["Industrial"],["LWG Gold","ISO 9001"],true,"+91 90000 00301",1995,520],
-["Jaipur Block Print House","India","Jaipur","Home Textiles","Block-printed quilts, napkins, aprons","6302",50,5000,30,"Mundra",["Artisan","Eco / Fair Trade"],["GOTS"],true,"+91 90000 00302",2010,95],
-["Tiruppur Knit Mills","India","Tiruppur","Knitwear","Jersey tees, rib tanks, kidswear","6109",500,120000,35,"Chennai",["Industrial"],["GOTS","OEKO-TEX 100","SA8000"],true,"+91 90000 00303",1999,1800],
-["Bengal Jute & Canvas","India","Kolkata","Leather Goods","Jute totes with leather trims","4202",100,15000,30,"Kolkata",["Eco / Fair Trade","Women-Owned"],["SA8000"],true,"+91 90000 00304",2013,140],
-["Agra Shoe Craft","India","Agra","Footwear","Hand-lasted brogues, chelsea boots","6403",120,6000,50,"Nhava Sheva",["Artisan"],["ISO 9001"],false,"+91 90000 00305",2006,110],
-["Ludhiana Wool Studio","India","Ludhiana","Knitwear","Merino sweaters, beanies","6110",300,25000,45,"Mundra",["Industrial","Women-Owned"],["OEKO-TEX 100"],false,"+91 90000 00306",2003,260],
-["Saigon Small Batch","Vietnam","Ho Chi Minh City","Cotton Apparel","Prototype runs, streetwear, shirts","6205",50,4000,25,"Cat Lai",["Women-Owned"],["OEKO-TEX 100"],true,"+84 900 000 401",2019,48],
-["Binh Duong Footwear JSC","Vietnam","Binh Duong","Footwear","Sneakers, canvas shoes","6404",1000,90000,60,"Cat Lai",["Industrial"],["ISO 9001","BSCI"],true,"+84 900 000 402",2004,2400],
-["Hoi An Leather Lane","Vietnam","Hoi An","Leather Goods","Custom bags, journal covers","4202",30,1500,20,"Da Nang",["Artisan","Women-Owned"],[],true,"+84 900 000 403",2015,26],
-["Hanoi Silk & Linen","Vietnam","Hanoi","Home Textiles","Silk pillowcases, linen bedding","6302",100,7000,35,"Hai Phong",["Eco / Fair Trade"],["OEKO-TEX 100"],false,"+84 900 000 404",2011,85],
-["Da Nang Knitworks","Vietnam","Da Nang","Knitwear","Performance knits, socks","6115",500,50000,40,"Da Nang",["Industrial"],["BSCI"],false,"+84 900 000 405",2010,600],
-["Porto Lace & Loom","Portugal","Guimarães","Home Textiles","Terry towels, bath robes","6302",200,30000,30,"Leixões",["Industrial","Eco / Fair Trade"],["OEKO-TEX 100","GOTS"],true,"+351 910 000 501",1987,330],
-["Felgueiras Shoemakers","Portugal","Felgueiras","Footwear","Goodyear-welted shoes, boots","6403",100,8000,45,"Leixões",["Artisan"],["ISO 9001"],true,"+351 910 000 502",1972,150],
-["Barcelos Jersey","Portugal","Barcelos","Cotton Apparel","Premium tees, sweatshirts","6109",100,20000,30,"Leixões",["Eco / Fair Trade"],["GOTS","OEKO-TEX 100"],true,"+351 910 000 503",2002,190],
-["Lisbon Leather Atelier","Portugal","Lisbon","Leather Goods","Minimal wallets, backpacks","4202",50,2000,28,"Lisbon",["Women-Owned","Artisan"],["LWG Silver"],false,"+351 910 000 504",2016,18],
-["Serra Wool Mill","Portugal","Covilhã","Knitwear","Burel wool blankets, coats","6110",80,4000,40,"Leixões",["Eco / Fair Trade","Artisan"],["RWS"],true,"+351 910 000 505",1925,70]
-].map((r,i)=>({id:i,name:r[0],country:r[1],city:r[2],cat:r[3],products:r[4],hs:r[5],moq:r[6],cap:r[7],lead:r[8],port:r[9],badges:r[10],certs:r[11],verified:r[12],wa:r[13],founded:r[14],staff:r[15],
-  email:"sales@"+r[0].toLowerCase().replace(/[^a-z]+/g,"")+".example"}));
+// ---------- SEARCH LINKS ----------
+const g=q=>"https://www.google.com/search?q="+encodeURIComponent(q);
+const siteSearch=(domain,q,country)=>g(`site:${domain} ${q}${country?" "+country:""}`);
+const kompass=(q,country)=>siteSearch("kompass.com",q,country);
+const alibaba=(q,country)=>siteSearch("alibaba.com",q+" supplier",country);
+const web=(q,country,moq)=>g(`${q} manufacturer exporter ${country}${moq?" MOQ "+moq:""}`);
 
+// ---------- UI ----------
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const fmt=n=>n.toLocaleString("en-US");
-const state={q:"",region:"",country:"",cats:new Set(),moq:5,badges:new Set(),verified:false,sort:"moq"};
+let current={q:"",moq:""};
 
-// stats
-const countries=[...new Set(S.map(s=>s.country))];
-$("#stats").innerHTML=[[S.length,"suppliers"],[countries.length,"countries"],[S.filter(s=>s.verified).length,"verified"],[S.filter(s=>s.moq<=100).length,"accept ≤100 units"]]
-  .map(([n,l])=>`<div><b>${n}</b><small>${l}</small></div>`).join("");
+function inquiry(q,moq){
+  return `Hello, I am sourcing ${q}.\nOrder quantity: ${moq?moq+" units":"small trial order"}.\nCould you share your price per unit, minimum order quantity (MOQ), lead time and shipping port?\nThank you.`;
+}
+function search(q,moq){
+  q=q.trim();if(!q)return;
+  current={q,moq:moq?String(Math.max(1,parseInt(moq,10)||0)||""):""};
+  $("#q-res").value=current.q;$("#m-res").value=current.moq;
+  render();
+  $("#home").hidden=true;$("#results").hidden=false;
+  location.hash="results";window.scrollTo(0,0);
+}
+function render(filter=""){
+  const {q,moq}=current;const f=filter.trim().toLowerCase();
+  const list=COUNTRIES.filter(([n])=>!f||n.toLowerCase().includes(f));
+  const ded=list.filter(([n])=>PLATFORMS[n]);
+  const rest=list.filter(([n])=>!PLATFORMS[n]);
+  const totalPlat=ded.reduce((a,[n])=>a+PLATFORMS[n].length,0);
+  const qd=esc(q);
 
-// filter controls
-function fillCountries(){
-  const list=countries.filter(c=>!state.region||REGION[c]===state.region).sort();
-  if(state.country&&!list.includes(state.country))state.country="";
-  $("#country").innerHTML=`<option value="">All countries</option>`+list.map(c=>`<option ${c===state.country?"selected":""}>${c}</option>`).join("");
-}
-$("#region").innerHTML=`<option value="">All regions</option>`+["Africa","Asia","Europe"].map(r=>`<option>${r}</option>`).join("");
-fillCountries();
-function chipSet(el,items,set){
-  el.innerHTML=items.map(x=>`<button type="button" class="chip" aria-pressed="false" data-v="${esc(x)}">${esc(x)}</button>`).join("");
-  el.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const v=b.dataset.v;
-    set.has(v)?set.delete(v):set.add(v);b.setAttribute("aria-pressed",set.has(v));render();});
-}
-chipSet($("#cats"),CATS,state.cats);
-chipSet($("#badges"),BADGES,state.badges);
-const moqLabel=()=>{const v=MOQ_STEPS[state.moq];$("#moqval").textContent=v===Infinity?"Any quantity":`≤ ${fmt(v)} units`;};
-moqLabel();
+  const dedHTML=ded.map(([n,iso])=>`
+    <article class="country" id="c-${iso}">
+      <div class="c-head"><span class="iso">${iso}</span><h3>${esc(n)}</h3><small>${PLATFORMS[n].length} director${PLATFORMS[n].length>1?"ies":"y"}</small></div>
+      ${PLATFORMS[n].map(([name,dom,focus])=>`
+        <div class="hit"><span class="u">${esc(dom)}</span>
+          <a class="t" href="${siteSearch(dom,q)}" target="_blank" rel="noopener">${qd} suppliers on ${esc(name)}</a>
+          <p>${esc(focus)}.${moq?` Ask for MOQ ${esc(moq)} units.`:""}</p></div>`).join("")}
+      <div class="more"><a href="${kompass(q,n)}" target="_blank" rel="noopener">Kompass</a><a href="${alibaba(q,n)}" target="_blank" rel="noopener">Alibaba</a><a href="${web(q,n,moq)}" target="_blank" rel="noopener">Web search</a></div>
+    </article>`).join("");
 
-$("#q").addEventListener("input",e=>{state.q=e.target.value.trim().toLowerCase();render();});
-$("#region").addEventListener("change",e=>{state.region=e.target.value;fillCountries();render();});
-$("#country").addEventListener("change",e=>{state.country=e.target.value;render();});
-$("#moq").addEventListener("input",e=>{state.moq=+e.target.value;moqLabel();render();});
-$("#verified").addEventListener("change",e=>{state.verified=e.target.checked;render();});
-$("#sort").addEventListener("change",e=>{state.sort=e.target.value;render();});
-$("#reset").addEventListener("click",()=>{
-  Object.assign(state,{q:"",region:"",country:"",moq:5,verified:false});state.cats.clear();state.badges.clear();
-  $("#q").value="";$("#region").value="";$("#moq").value=5;$("#verified").checked=false;
-  document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed","false"));fillCountries();moqLabel();render();
-});
+  const restHTML=rest.map(([n,iso])=>`
+    <div class="orow"><span class="n"><span class="iso">${iso}</span><span>${esc(n)}</span></span>
+      <span class="l"><a href="${kompass(q,n)}" target="_blank" rel="noopener">Kompass</a><a href="${web(q,n,moq)}" target="_blank" rel="noopener">Web</a></span></div>`).join("");
 
-function matches(s){
-  if(state.q&&!(s.name+" "+s.products+" "+s.city+" "+s.country+" "+s.cat).toLowerCase().includes(state.q))return false;
-  if(state.region&&REGION[s.country]!==state.region)return false;
-  if(state.country&&s.country!==state.country)return false;
-  if(state.cats.size&&!state.cats.has(s.cat))return false;
-  if(s.moq>MOQ_STEPS[state.moq])return false;
-  for(const b of state.badges)if(!s.badges.includes(b))return false;
-  if(state.verified&&!s.verified)return false;
-  return true;
+  $("#res").innerHTML=`
+    <p class="summary">Results for <b>${qd}</b>${moq?` · MOQ <b>${esc(moq)}</b> units`:""} — <b>${ded.length}</b> countries with dedicated directories (${totalPlat} platforms) and <b>${rest.length}</b> more through global directories.</p>
+    <div class="msg">
+      <div class="msg-head"><span>Message to send suppliers</span><button class="small-btn" type="button" id="copy">Copy</button></div>
+      <p id="msgtext">${esc(inquiry(q,moq))}</p>
+    </div>
+    <div class="jump"><input id="cf" type="search" placeholder="Jump to a country" aria-label="Filter countries" value="${esc(filter)}"></div>
+    ${ded.length?`<h2 class="sec">Countries with dedicated directories</h2><p class="sec-note">Each link opens a search for "${qd}" on that country's platform.</p>${dedHTML}`:""}
+    ${rest.length?`<h2 class="sec">All other countries</h2><p class="sec-note">No national platform listed yet. Search these through Kompass or the open web.</p><div class="others">${restHTML}</div>`:""}
+    ${!list.length?`<p class="empty">No country matches "${esc(filter)}".</p>`:""}
+    <p class="disclaimer">FindByWorld links to third-party directories and does not verify suppliers. Check business licences, ask for samples and use secure payment terms before ordering.</p>`;
+  const cf=$("#cf");cf.addEventListener("input",e=>{const pos=e.target.selectionStart;render(e.target.value);const n=$("#cf");n.focus();n.setSelectionRange(pos,pos);});
+  $("#copy").addEventListener("click",()=>{const t=$("#msgtext").textContent;
+    try{navigator.clipboard.writeText(t).then(()=>toast("Message copied"),()=>selectText());}catch(_){selectText();}});
 }
-function card(s){
-  return `<button type="button" class="card" data-id="${s.id}">
-    <div class="card-top"><div><h3>${esc(s.name)}</h3><div class="loc">${esc(s.city)}, ${esc(s.country)} · ${esc(s.cat)}</div></div><span class="flag" aria-hidden="true">${FLAG[s.country]}</span></div>
-    <p class="prods">${esc(s.products)}</p>
-    <div class="badges">${s.verified?`<span class="badge ver">✓ Verified</span>`:""}${s.moq<=100?`<span class="badge low">Small batch</span>`:""}${s.badges.filter(b=>b!=="Industrial").map(b=>`<span class="badge">${esc(b)}</span>`).join("")}</div>
-    <div class="facts"><div><small>MOQ</small><span>${fmt(s.moq)}</span></div><div><small>Lead</small><span>${s.lead} d</span></div><div><small>HS</small><span>${s.hs}</span></div></div>
-  </button>`;
-}
-function render(){
-  let r=S.filter(matches);
-  r.sort(state.sort==="moq"?(a,b)=>a.moq-b.moq:state.sort==="lead"?(a,b)=>a.lead-b.lead:(a,b)=>a.name.localeCompare(b.name));
-  $("#count").textContent=`${r.length} of ${S.length} suppliers`;
-  $("#grid").innerHTML=r.length?r.map(card).join(""):`<div class="empty">No suppliers match these filters. Try raising the minimum order or clearing a badge.</div>`;
-}
-render();
+function selectText(){const r=document.createRange();r.selectNodeContents($("#msgtext"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Press Ctrl+C to copy");}
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2000);}
 
-// detail dialog
-const dlg=$("#dlg");
-$("#grid").addEventListener("click",e=>{const c=e.target.closest(".card");if(c)openSupplier(S[+c.dataset.id]);});
-function openSupplier(s){
-  const waDigits=s.wa.replace(/\D/g,"");
-  const maps="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(s.city+", "+s.country);
-  dlg.innerHTML=`<div class="dlg-head"><div><h2 id="dlg-title" style="font-size:1.35rem">${esc(s.name)}</h2>
-      <div class="loc">${FLAG[s.country]} ${esc(s.city)}, ${esc(s.country)} · Est. ${s.founded} · ${fmt(s.staff)} staff</div></div>
-      <button class="close" type="button" aria-label="Close">✕</button></div>
-    <div class="dlg-body">
-      <div class="badges">${s.verified?`<span class="badge ver">✓ Verified supplier</span>`:`<span class="badge">Not yet verified</span>`}${s.badges.map(b=>`<span class="badge">${esc(b)}</span>`).join("")}</div>
-      <p style="margin:0">${esc(s.products)}</p>
-      <div class="kv">
-        <div><small>Minimum order</small><span>${fmt(s.moq)} units</span></div>
-        <div><small>Capacity</small><span>${fmt(s.cap)} / month</span></div>
-        <div><small>Lead time</small><span>${s.lead} days</span></div>
-        <div><small>HS code</small><span>${s.hs}</span></div>
-        <div><small>Ships FOB</small><span>${esc(s.port)}</span></div>
-        <div><small>Certifications</small><span>${s.certs.length?esc(s.certs.join(", ")):"None listed"}</span></div>
-      </div>
-      <div class="contact">
-        <div class="crow"><div><small class="loc">WhatsApp</small><br><code>${esc(s.wa)}</code></div>
-          <div class="actions"><button class="btn" type="button" data-copy="${esc(s.wa)}">Copy</button><a class="btn wa" href="https://wa.me/${waDigits}" target="_blank" rel="noopener">Chat on WhatsApp</a></div></div>
-        <div class="crow"><div><small class="loc">Email</small><br><code>${esc(s.email)}</code></div>
-          <div class="actions"><button class="btn" type="button" data-copy="${esc(s.email)}">Copy</button></div></div>
-        <small class="loc">Sample contact details. In the full product these unlock with Pro.</small>
-      </div>
-      <div class="actions"><a class="btn" href="${maps}" target="_blank" rel="noopener">View ${esc(s.city)} on map</a>
-        <button class="btn primary" type="button" data-rfq="${s.id}">Request a quote</button></div>
-    </div>`;
-  dlg.showModal();
-}
-dlg.addEventListener("click",e=>{
-  if(e.target===dlg||e.target.closest(".close")){dlg.close();return;}
-  const cp=e.target.closest("[data-copy]");
-  if(cp){const t=cp.dataset.copy;
-    try{navigator.clipboard.writeText(t).then(()=>toast("Copied "+t),()=>toast("Select the text to copy it"));}catch(_){toast("Select the text to copy it");}}
-  const rq=e.target.closest("[data-rfq]");
-  if(rq){const s=S[+rq.dataset.rfq];dlg.close();location.hash="rfq";
-    $("#rf-cat").value=s.cat;$("#rf-country").value=s.country;$("#rf-title").focus();updateMatch();}
-});
-let tt;function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2200);}
-
-// RFQ board
-const seedRFQ=[
-  {title:"Canvas tote bags with leather handles",qty:200,cat:"Leather Goods",country:"",notes:"Natural canvas, vegetable-tanned handles, one-colour logo print. Target $9 FOB.",when:"2 days ago",by:"Fieldnote Goods (sample)"},
-  {title:"Organic cotton baby onesies",qty:300,cat:"Cotton Apparel",country:"Kenya",notes:"GOTS certified, 3 sizes, 2 colours. Samples needed by January.",when:"4 days ago",by:"Little Acre (sample)"},
-  {title:"Hand-loomed cushion covers",qty:80,cat:"Home Textiles",country:"",notes:"45×45 cm, natural dyes preferred, artisan or women-owned maker.",when:"1 week ago",by:"Hearth & Kin (sample)"}
-];
-let rfqs=seedRFQ.slice();
-try{const saved=JSON.parse(localStorage.getItem("findbyworld-rfqs")||"[]");if(Array.isArray(saved))rfqs=saved.concat(rfqs);}catch(_){}
-const matchCount=r=>S.filter(s=>s.cat===r.cat&&(!r.country||s.country===r.country)&&s.moq<=r.qty).length;
-function renderRFQ(){
-  $("#rfqs").innerHTML=rfqs.map(r=>`<article class="rfq-item"><h3>${esc(r.title)}</h3>
-    <div class="meta"><span>Qty <b>${fmt(+r.qty)}</b></span><span>${esc(r.cat)}</span><span>${r.country?esc(r.country):"Any country"}</span><span>${esc(r.when)}</span></div>
-    ${r.notes?`<p style="margin:0;font-size:.9rem">${esc(r.notes)}</p>`:""}
-    <div class="meta"><span>${esc(r.by)}</span><span class="match">${matchCount(r)} matching suppliers</span></div></article>`).join("");
-}
-$("#rf-cat").innerHTML=CATS.map(c=>`<option>${c}</option>`).join("");
-$("#rf-country").innerHTML=`<option value="">Any country</option>`+countries.sort().map(c=>`<option>${c}</option>`).join("");
-function updateMatch(){const n=matchCount({cat:$("#rf-cat").value,country:$("#rf-country").value,qty:+$("#rf-qty").value||0});
-  $("#rf-match").textContent=`${n} supplier${n===1?"":"s"} in the directory can take this order.`;}
-["#rf-cat","#rf-country","#rf-qty"].forEach(s=>$(s).addEventListener("input",updateMatch));
-$("#rfqform").addEventListener("submit",e=>{e.preventDefault();
-  const r={title:$("#rf-title").value.trim(),qty:+$("#rf-qty").value,cat:$("#rf-cat").value,country:$("#rf-country").value,notes:$("#rf-notes").value.trim(),when:"Just now",by:"You"};
-  if(!r.title)return;rfqs.unshift(r);
-  try{localStorage.setItem("findbyworld-rfqs",JSON.stringify(rfqs.filter(x=>x.by==="You")));}catch(_){}
-  renderRFQ();e.target.reset();$("#rf-qty").value=200;updateMatch();toast(`Posted. ${matchCount(r)} matching suppliers would be notified.`);});
-renderRFQ();updateMatch();
-
-// hash routing
-function route(){const v=["directory","rfq","plans"].includes(location.hash.slice(1))?location.hash.slice(1):"directory";
-  ["directory","rfq","plans"].forEach(x=>$("#view-"+x).hidden=x!==v);
-  document.querySelectorAll("nav.tabs a").forEach(a=>{if(a.dataset.view===v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
-}
-window.addEventListener("hashchange",()=>{route();window.scrollTo(0,0);});
-route();
+$("#f-home").addEventListener("submit",e=>{e.preventDefault();search($("#q-home").value,$("#m-home").value);});
+$("#f-res").addEventListener("submit",e=>{e.preventDefault();search($("#q-res").value,$("#m-res").value);});
+document.querySelectorAll(".tries button").forEach(b=>b.addEventListener("click",()=>{$("#q-home").value=b.dataset.q;$("#m-home").value=b.dataset.m;search(b.dataset.q,b.dataset.m);}));
+function goHome(){$("#results").hidden=true;$("#home").hidden=false;}
+window.addEventListener("hashchange",()=>{if(location.hash!=="#results"||!current.q)goHome();});
+if(location.hash==="#results")history.replaceState(null,"",location.pathname);
 </script>
 </body></html>
