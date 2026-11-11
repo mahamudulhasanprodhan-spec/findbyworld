@@ -2,7 +2,7 @@
 // Loaded last, after links.js and search.js.
 // ---------- DATA ----------
 // Filled by loadData() from data/countries.json and data/platforms.json (see docs/DATA.md).
-// PLATFORMS: { "Country name": [[platform name, domain, what it covers], ...] }
+// PLATFORMS: { "Country name": [[platform name, domain, what it covers, scope, searchUrl], ...] }
 // COUNTRIES: [[name, ISO code], ...]
 let PLATFORMS={},COUNTRIES=[];
 let dataReady=false;
@@ -25,7 +25,7 @@ function platformProblem(p){
   if(!isText(p.focus))return "missing focus";
   if(!SCOPES.includes(p.scope))return "scope must be national or international";
   if(!Array.isArray(p.countries)||!p.countries.length)return "countries must be a list of ISO codes";
-  if(p.searchUrl!=null&&!isText(p.searchUrl))return "searchUrl must be null or text";
+  if(p.searchUrl!=null&&!(isText(p.searchUrl)&&p.searchUrl.startsWith("https://")&&/\{q-?\}/.test(p.searchUrl)))return "searchUrl must be null, or start with https:// and contain {q} or {q-}";
   return "";
 }
 async function getJSON(url){
@@ -50,7 +50,7 @@ async function loadData(){
       p.countries.forEach(iso=>{
         if(!nameOf[iso]){console.warn(`platforms.json: "${p.name}" lists unknown country code "${iso}"`);return;}
         const focus=(p.focusByCountry&&isText(p.focusByCountry[iso]))?p.focusByCountry[iso]:p.focus;
-        (platforms[nameOf[iso]]=platforms[nameOf[iso]]||[]).push([p.name,p.domain,focus]);
+        (platforms[nameOf[iso]]=platforms[nameOf[iso]]||[]).push([p.name,p.domain,focus,p.scope,p.searchUrl||""]);
       });
     });
     PLATFORMS=platforms;COUNTRIES=countries;dataReady=true;
