@@ -5,7 +5,7 @@
   { "name": "ExportHub", "domain": "exporthub.com", "focus": "Exporters, garments", "scope": "international", "countries": ["BD"], "searchUrl": null },
   { "name": "B2Brazil", "domain": "b2brazil.com", "focus": "General B2B, agribusiness", "scope": "national", "countries": ["BR"], "searchUrl": null },
   { "name": "Alibaba", "domain": "alibaba.com", "focus": "General manufacturing, auto parts", "scope": "international", "countries": ["CN"], "searchUrl": "https://www.alibaba.com/search/page?SearchScene=proSearch&SearchText={q}&pro=true" },
-  { "name": "Global Sources", "domain": "globalsources.com", "focus": "Electronics, auto parts", "scope": "international", "countries": ["CN"], "searchUrl": null },
+  { "name": "Global Sources", "domain": "globalsources.com", "focus": "Electronics, auto parts", "scope": "international", "countries": ["CN"], "searchUrl": "https://www.globalsources.com/searchList/products?keyWord={q}&pageNum=1" },
   { "name": "Made-in-China", "domain": "made-in-china.com", "focus": "Machinery, industrial goods, consumer products", "scope": "international", "countries": ["CN"], "searchUrl": "https://www.made-in-china.com/productdirectory.do?subaction=hunt&style=b&mode=and&code=0&comProvince=nolimit&order=0&isOpenCorrection=1&org=top&keyword=&file=&searchType=0&word={q}" },
   { "name": "Kompass Colombia", "domain": "co.kompass.com", "focus": "Industrial and general B2B companies", "scope": "national", "countries": ["CO"], "searchUrl": null },
   { "name": "DirectIndustry", "domain": "directindustry.com", "focus": "Industrial machinery", "scope": "international", "countries": ["FR"], "searchUrl": null },
