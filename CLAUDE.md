@@ -51,8 +51,8 @@ the reviewed research file "Comprehensive Global B2B Directories – All Countri
 index.html
 css/styles.css
 js/links.js       builds every search URL (one place for all URL logic)
-js/search.js      reads the form, renders results, country filter, copy message
-js/app.js         startup, loads data, home ↔ results switching
+js/search.js      renders results, country filter, copy message
+js/app.js         startup, loads data, form handlers, home ↔ results switching
 data/countries.json   196 countries: name, ISO code, region
 data/platforms.json   directories: name, domain, focus, scope, countries
 docs/PLAN.md  docs/DATA.md  docs/CHANGELOG.md
