@@ -25,7 +25,7 @@ function platformProblem(p){
   if(!isText(p.focus))return "missing focus";
   if(!SCOPES.includes(p.scope))return "scope must be national or international";
   if(!Array.isArray(p.countries)||!p.countries.length)return "countries must be a list of ISO codes";
-  if(p.searchUrl!=null&&!(isText(p.searchUrl)&&p.searchUrl.startsWith("https://")&&p.searchUrl.includes("{q}")))return "searchUrl must be null, or start with https:// and contain {q}";
+  if(p.searchUrl!=null&&!(isText(p.searchUrl)&&p.searchUrl.startsWith("https://")&&/\{q-?\}/.test(p.searchUrl)))return "searchUrl must be null, or start with https:// and contain {q} or {q-}";
   return "";
 }
 async function getJSON(url){
