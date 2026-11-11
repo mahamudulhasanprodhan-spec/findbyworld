@@ -108,6 +108,9 @@ Home page
 - [ ] Search with an empty product box does not run.
 - [ ] "bicycle" + MOQ 100 → results page. "bicycle" with MOQ empty also works.
 - [ ] Each "Try" button runs its search.
+- [ ] Recent searches: after a few searches, the "Recent" row lists them (newest first,
+      at most 5) and they are still there after a page reload.
+- [ ] "Clear" removes the recent searches, and they stay gone after a reload.
 
 Results page
 - [ ] Summary shows 30 dedicated countries and 166 others (196 total) when no country
@@ -116,6 +119,9 @@ Results page
       China → Alibaba, India → IndiaMART, Kenya → Kompass.
 - [ ] MOQ appears in the supplier message (and wherever the current milestone says).
 - [ ] "Jump to a country" narrows the list and keeps typing smooth (no lost focus).
+- [ ] Region chips: "Africa" shows only African countries; "All" restores everything.
+- [ ] A region chip and "Jump to a country" combine: Africa + "ken" shows only Kenya;
+      Asia + "ken" shows no countries.
 - [ ] "Copy" copies the message (or selects it if the clipboard is blocked).
 - [ ] A new search from the top bar updates the results.
 - [ ] Clicking the logo, or the browser Back button, returns to the home page.

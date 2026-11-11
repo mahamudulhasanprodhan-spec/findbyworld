@@ -3,7 +3,7 @@
 // ---------- DATA ----------
 // Filled by loadData() from data/countries.json and data/platforms.json (see docs/DATA.md).
 // PLATFORMS: { "Country name": [[platform name, domain, what it covers, scope, searchUrl], ...] }
-// COUNTRIES: [[name, ISO code], ...]
+// COUNTRIES: [[name, ISO code, region], ...]
 let PLATFORMS={},COUNTRIES=[];
 let dataReady=false;
 const REGIONS=["Africa","Asia","Europe","Middle East","North America","Latin America & Caribbean","Oceania"];
@@ -42,7 +42,7 @@ async function loadData(){
     cs.forEach((c,i)=>{
       const why=countryProblem(c)||(nameOf[c.iso]?"duplicate iso":"");
       if(why){console.warn(`countries.json: skipped record ${i+1} (${why})`,c);return;}
-      nameOf[c.iso]=c.name;countries.push([c.name,c.iso]);
+      nameOf[c.iso]=c.name;countries.push([c.name,c.iso,c.region]);
     });
     ps.forEach((p,i)=>{
       const why=platformProblem(p);
@@ -69,6 +69,7 @@ function search(q,moq){
   q=q.trim();if(!q||!dataReady)return;
   current={q,moq:moq?String(Math.max(1,parseInt(moq,10)||0)||""):""};
   $("#q-res").value=current.q;$("#m-res").value=current.moq;
+  addRecent(current.q,current.moq);
   render();
   $("#home").hidden=true;$("#results").hidden=false;
   location.hash="results";window.scrollTo(0,0);
@@ -77,6 +78,39 @@ function search(q,moq){
 $("#f-home").addEventListener("submit",e=>{e.preventDefault();search($("#q-home").value,$("#m-home").value);});
 $("#f-res").addEventListener("submit",e=>{e.preventDefault();search($("#q-res").value,$("#m-res").value);});
 document.querySelectorAll(".tries button").forEach(b=>b.addEventListener("click",()=>{$("#q-home").value=b.dataset.q;$("#m-home").value=b.dataset.m;search(b.dataset.q,b.dataset.m);}));
+
+// ---------- RECENT SEARCHES ----------
+// The last 5 searches (product + MOQ), newest first, kept in localStorage.
+const RECENT_KEY="findbyworld-recent",RECENT_MAX=5;
+function loadRecent(){
+  try{
+    const v=JSON.parse(localStorage.getItem(RECENT_KEY)||"[]");
+    return Array.isArray(v)?v.filter(r=>r&&isText(r.q)&&typeof r.moq==="string").slice(0,RECENT_MAX):[];
+  }catch(_){return [];}
+}
+let recent=loadRecent();
+function addRecent(q,moq){
+  recent=[{q,moq},...recent.filter(r=>!(r.q.toLowerCase()===q.toLowerCase()&&r.moq===moq))].slice(0,RECENT_MAX);
+  try{localStorage.setItem(RECENT_KEY,JSON.stringify(recent));}catch(_){}
+  renderRecent();
+}
+function renderRecent(){
+  const box=$("#recent");
+  box.hidden=!recent.length;
+  box.innerHTML=recent.length?`Recent:${recent.map((r,i)=>`<button type="button" data-i="${i}">${esc(r.q)}${r.moq?" · "+esc(r.moq):""}</button>`).join("")}<button type="button" class="clear" id="recent-clear">Clear</button>`:"";
+}
+$("#recent").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  if(b.id==="recent-clear"){
+    recent=[];
+    try{localStorage.removeItem(RECENT_KEY);}catch(_){}
+    renderRecent();$("#q-home").focus();return;
+  }
+  const r=recent[+b.dataset.i];
+  $("#q-home").value=r.q;$("#m-home").value=r.moq;search(r.q,r.moq);
+});
+renderRecent();
+
 function goHome(){$("#results").hidden=true;$("#home").hidden=false;}
 window.addEventListener("hashchange",()=>{if(location.hash!=="#results"||!current.q)goHome();});
 if(location.hash==="#results")history.replaceState(null,"",location.pathname);
